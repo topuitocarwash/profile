@@ -1,0 +1,756 @@
+/* ========================================= */
+/* 1. VARIÁVEIS E RESET           */
+/* ========================================= */
+
+:root {
+    --primary-color: #007bff; /* Azul vibrante - para botões e detalhes */
+    --secondary-color: #0056b3; /* Azul mais escuro - para hover/detalhes */
+    --accent-color: #ffc107; /* Amarelo/Dourado - para destaque (featured) */
+    --background-light: #f4f7f9; /* Fundo claro da seção */
+    --background-dark: #1b2631; /* Fundo escuro (hero, footer) - Ligeiramente mais suave */
+    --text-dark: #333;
+    --text-light: #fff;
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra mais profunda e suave */
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    background-color: var(--background-light);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color var(--transition-speed);
+}
+
+ul {
+    list-style: none;
+}
+
+/* Reutilizáveis */
+.header-container, .footer-container, .hero-actions {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: 80px 20px;
+    text-align: center;
+    transition: padding 0.3s ease; /* Transição para mobile */
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 50px;
+}
+
+/* ========================================= */
+/* 2. BOTÕES (Botoes)             */
+/* ========================================= */
+
+.btn-primary, .btn-secondary, .btn-cta, .btn-primary-small {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all var(--transition-speed) ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.btn-primary, .btn-primary-small {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary-small:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 123, 255, 0.3); /* Sombra no hover */
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    margin-left: 15px;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.btn-cta {
+    padding: 15px 40px;
+    font-size: 1.1em;
+}
+
+.btn-primary-small {
+    padding: 8px 18px;
+    font-size: 0.9em;
+}
+
+/* ========================================= */
+/* 3. CABEÇALHO E NAV             */
+/* ========================================= */
+
+.main-header {
+    background-color: var(--text-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.main-header .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 80px;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.logo i {
+    color: var(--primary-color);
+}
+
+.main-nav ul {
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul li a {
+    color: var(--text-dark);
+    padding: 0 15px;
+    font-weight: 600;
+    font-size: 1em;
+    position: relative; 
+}
+
+/* Efeito da linha */
+.main-nav ul li a:not(.btn-primary-small)::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 15px;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed) ease;
+}
+
+.main-nav ul li a:not(.btn-primary-small):hover::after {
+    width: calc(100% - 30px); 
+}
+
+/* Menu Hambúrguer (Escondido por padrão no desktop) */
+.menu-toggle {
+    display: none; 
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001; 
+}
+
+.menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-dark);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Animação do 'X' quando ativo */
+.menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+.menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+
+/* ========================================= */
+/* 4. SEÇÃO HERO/BANNER           */
+/* ========================================= */
+
+.hero-banner {
+    /* ATUALIZADO: Substituído o caminho da imagem */
+    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('img/home.jpg') no-repeat center center/cover;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    position: relative;
+    color: var(--text-light);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 600px;
+}
+
+.hero-content h1 {
+    font-size: 4em;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.hero-content p {
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+/* ========================================= */
+/* 5. SEÇÃO SERVIÇOS              */
+/* ========================================= */
+
+.section-services {
+    background-color: var(--background-light);
+}
+
+.service-cards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background-color: var(--text-light);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra mais leve para os cards */
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+    border-top: 5px solid var(--primary-color);
+}
+
+.service-card.featured {
+    transform: scale(1.03); /* Ajustado para um scale menor */
+    border-top: 5px solid var(--accent-color);
+    box-shadow: var(--card-shadow);
+}
+
+.service-card:hover {
+    transform: translateY(-8px); /* Efeito de elevação maior no hover */
+    box-shadow: var(--card-shadow);
+}
+
+.service-card i {
+    font-size: 3.5em; /* Ícones ligeiramente maiores */
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.service-card.featured i {
+    color: var(--accent-color);
+}
+
+.service-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.card-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.card-link:hover {
+    color: var(--secondary-color);
+}
+
+/* ========================================= */
+/* 6. SEÇÃO QUEM SOMOS            */
+/* ========================================= */
+
+.section-about {
+    text-align: left;
+    background-color: var(--text-light);
+}
+
+.about-content-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    text-align: left;
+}
+
+.about-image, .about-text {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+}
+
+.about-text h2 {
+    font-size: 2em;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.about-text ul {
+    margin: 20px 0 30px;
+}
+
+.about-text ul li {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.about-text ul li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+/* ========================================= */
+/* 7. SEÇÃO GALERIA               */
+/* ========================================= */
+
+.section-gallery {
+    background-color: var(--background-light);
+}
+
+.gallery-grid {
+    max-width: 1200px;
+    margin: 40px auto 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    grid-template-rows: repeat(2, 250px);
+    gap: 15px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease, filter 0.4s ease; /* Adicionada transição de filtro */
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+}
+
+.gallery-item .caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)); /* Gradiente mais elegante */
+    color: var(--text-light);
+    padding: 10px;
+    font-weight: 600;
+    font-size: 1.1em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .caption {
+    opacity: 1;
+}
+
+/* Ajustes de layout para a Galeria (Span Columns) */
+.gallery-item:nth-child(1) { grid-column: 1 / span 2; grid-row: 1; } 
+.gallery-item:nth-child(2) { grid-column: 3 / span 2; grid-row: 1; } 
+.gallery-item:nth-child(3) { grid-column: 1 / span 2; grid-row: 2; } 
+.gallery-item:nth-child(4) { grid-column: 3 / span 2; grid-row: 2; } 
+
+/* ========================================= */
+/* 8. SEÇÃO FAQ (ACORDEÃO)        */
+/* ========================================= */
+
+.faq-section {
+    background-color: var(--text-light);
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.faq-item {
+    background-color: var(--text-light);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    border: 1px solid #e0e0e0;
+}
+
+.faq-question {
+    padding: 18px 20px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-dark);
+    transition: background-color 0.2s ease;
+}
+
+.faq-question:hover {
+    background-color: #f7f7f7;
+}
+
+.faq-question.active {
+    background-color: #eaf3ff; /* Fundo azul claro quando ativo */
+    color: var(--secondary-color);
+}
+
+.faq-question::after {
+    content: '+';
+    font-size: 1.5em;
+    color: var(--primary-color);
+    transition: transform var(--transition-speed) ease;
+    font-weight: 400; /* Para o ícone ser mais limpo */
+}
+
+.faq-question.active::after {
+    content: '−'; 
+    transform: rotate(0deg);
+    color: var(--secondary-color);
+}
+
+.faq-answer {
+    padding: 0 20px;
+    max-height: 0; 
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+    color: #555;
+    background-color: #fcfcfc;
+}
+
+.faq-answer.active {
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+/* ========================================= */
+/* 9. SEÇÃO CONTACTOS             */
+/* ========================================= */
+
+.section-contactos {
+    background-color: var(--background-light);
+}
+
+.contact-grid {
+    max-width: 1000px;
+    margin: 40px auto 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 50px;
+    text-align: left;
+    background-color: var(--text-light);
+    padding: 40px; /* Padding interno aumentado */
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+}
+
+.contact-form-side h3, .contact-info-side h3 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 1.6em;
+}
+
+/* Estilo do Formulário */
+.contact-form input, .contact-form select, .contact-form textarea {
+    width: 100%;
+    padding: 14px; /* Padding aumentado para toque */
+    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efeito de foco suave */
+    outline: none;
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px; /* Altura mínima aumentada */
+}
+
+.contact-form .btn-cta {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Estilo das Informações */
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.info-item i {
+    color: var(--primary-color);
+    margin-right: 15px;
+    font-size: 1.6em; /* Ícone de info ligeiramente maior */
+    width: 30px; 
+    text-align: center;
+}
+
+.map-placeholder {
+    margin-top: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ========================================= */
+/* 10. RODAPÉ (Footer)             */
+/* ========================================= */
+
+.main-footer {
+    background-color: var(--background-dark);
+    color: #ccc;
+    padding-top: 50px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    padding-bottom: 30px;
+    margin-bottom: 20px;
+}
+
+.footer-info, .footer-links, .footer-social {
+    width: 33%;
+    padding: 0 15px;
+}
+
+.footer-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.footer-links h4, .footer-social h4 {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.footer-links ul li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: #ccc;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+.footer-social a {
+    font-size: 1.8em; /* Ícones sociais maiores */
+    margin-right: 20px;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9em;
+}
+
+.footer-bottom i {
+    color: #dc3545;
+}
+
+
+/* ========================================= */
+/* 11. RESPONSIVIDADE             */
+/* ========================================= */
+
+@media (max-width: 992px) {
+    /* Ativa o menu hambúrguer e esconde a navegação no mobile */
+    .menu-toggle {
+        display: flex;
+    }
+
+    .main-nav {
+        /* Estado inicial do menu (escondido) */
+        position: absolute;
+        top: 80px; 
+        left: 0;
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        background-color: var(--text-light);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        transition: height 0.4s ease, padding 0.4s ease;
+    }
+
+    .main-nav.active {
+        /* Estado ativo (aberto) */
+        height: 300px; /* Altura ajustada para acomodar todos os links */
+        padding: 15px 0;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .main-nav ul li {
+        width: 100%;
+        text-align: left; /* Alinhamento à esquerda para melhor leitura */
+    }
+
+    .main-nav ul li a {
+        display: block;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--background-light);
+        width: 100%;
+    }
+    
+    /* Remove a linha de hover no mobile */
+    .main-nav ul li a:not(.btn-primary-small)::after {
+        display: none;
+    }
+    
+    /* Ajustes Gerais */
+    .hero-content h1 {
+        font-size: 3em;
+    }
+
+    .about-content-grid {
+        flex-direction: column;
+    }
+    
+    .about-text {
+        padding-top: 30px;
+    }
+
+    .about-image {
+        order: -1; 
+    }
+
+    .footer-container {
+        flex-direction: column;
+    }
+
+    .footer-info, .footer-links, .footer-social {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+    
+    /* Galeria em Mobile/Tablet */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablets */
+        grid-template-rows: auto;
+    }
+    
+    /* Remove os spans no mobile */
+    .gallery-item:nth-child(1), .gallery-item:nth-child(2), 
+    .gallery-item:nth-child(3), .gallery-item:nth-child(4) {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    /* Contactos em Mobile/Tablet */
+    .contact-grid {
+        grid-template-columns: 1fr; 
+    }
+    
+    .contact-info-side {
+        order: -1; 
+    }
+}
+
+@media (max-width: 600px) {
+    section {
+        padding: 50px 15px; /* Padding reduzido em mobile */
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5em;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn-secondary {
+        margin-left: 0;
+        margin-top: 15px;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr; /* 1 coluna em celulares */
+    }
+}
