@@ -1,210 +1,376 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOPUITO CAR WASH - O Seu Ponto de Encontro com a Limpeza Automotiva</title>
+    <title>TOPUITO CAR WASH - Detalhamento e Limpeza Automotiva Premium</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração do Tailwind para a cor primária e font Poppins -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0056b3', // Azul Marinho Profissional (Mais escuro que o original)
+                        'accent': '#ffc107', // Dourado/Amarelo de Destaque
+                        'background': '#f8f9fa', // Fundo claro
+                        'dark-bg': '#1e293b', // Fundo escuro (Footer, Hero Overlay)
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+              
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
 
-    <header class="main-header">
-        <div class="header-container">
-            <a href="#home" class="logo" aria-label="HydroClean - Ir para o Início">
-                <i class="fas fa-water"></i> TOPUITO CAR WASH
+    <!-- CSS customizado para elementos específicos (Acordeão, Mobile Menu) -->
+    <style>
+        /* Estilos Customizados Necessários para Funcionalidades e Detalhes de Layout */
+        
+        /* 1. Efeito de Linha de Navegação (melhora o visual desktop) */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 15px;
+            width: 0;
+            height: 3px;
+            background-color: theme('colors.accent');
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: calc(100% - 30px); 
+        }
+
+        /* 2. Banner/Hero (usa cor de fundo escura com imagem) */
+        .hero-banner {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('home.jpg') no-repeat center center/cover;
+            height: 90vh;
+        }
+
+        /* 3. FAQ Acordeão (para transição de altura) */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+        }
+        .faq-answer.active {
+            padding-top: 1rem;
+            padding-bottom: 1.25rem;
+            max-height: 500px; /* Valor grande para animar a abertura */
+        }
+        .faq-question::after {
+            content: '+';
+            transition: transform 0.3s ease;
+        }
+        .faq-question.active::after {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        /* 4. Mobile Menu Toggle */
+        .main-nav-mobile {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.4s ease-in-out;
+        }
+        .main-nav-mobile.active {
+            height: 320px; /* Altura suficiente para o menu */
+        }
+    </style>
+</head>
+<body class="bg-background">
+
+    <!-- CABEÇALHO E NAVEGAÇÃO -->
+    <header class="main-header sticky top-0 z-50 bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a href="#home" class="text-2xl font-extrabold text-dark-bg tracking-wide" aria-label="TOPUITO CAR WASH - Ir para o Início">
+                <i class="fas fa-water text-primary mr-1"></i> TOPUITO CAR WASH
             </a>
             
-            <nav class="main-nav" role="navigation" aria-label="Navegação Principal">
-                <ul>
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#services">Serviços</a></li>
-                    <li><a href="#about">Quem Somos</a></li>
-                    <li><a href="#gallery">Galeria</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#contactos" class="btn-primary-small">Contactos</a></li>
-                </ul>
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex space-x-8 items-center" role="navigation" aria-label="Navegação Principal">
+                <a href="#home" class="text-gray-700 hover:text-primary font-semibold relative nav-link py-2 px-4">Início</a>
+                <a href="#services" class="text-gray-700 hover:text-primary font-semibold relative nav-link py-2 px-4">Serviços</a>
+                <a href="#about" class="text-gray-700 hover:text-primary font-semibold relative nav-link py-2 px-4">Quem Somos</a>
+                <a href="#gallery" class="text-gray-700 hover:text-primary font-semibold relative nav-link py-2 px-4">Galeria</a>
+                <a href="#faq" class="text-gray-700 hover:text-primary font-semibold relative nav-link py-2 px-4">FAQ</a>
+                <a href="#contactos" class="bg-primary text-white px-5 py-2 rounded-full font-bold shadow-md hover:bg-opacity-90 transform hover:scale-105 transition duration-300">
+                    Contactos
+                </a>
             </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-toggle" class="md:hidden text-2xl text-dark-bg focus:outline-none" aria-label="Abrir Menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
+        
+        <!-- Mobile Nav Dropdown -->
+        <nav id="mobile-menu" class="main-nav-mobile md:hidden bg-white shadow-xl absolute w-full z-40">
+            <ul class="flex flex-col items-center py-2">
+                <li><a href="#home" class="block w-full text-center py-3 text-gray-700 hover:bg-background transition duration-200 border-b border-gray-100">Início</a></li>
+                <li><a href="#services" class="block w-full text-center py-3 text-gray-700 hover:bg-background transition duration-200 border-b border-gray-100">Serviços</a></li>
+                <li><a href="#about" class="block w-full text-center py-3 text-gray-700 hover:bg-background transition duration-200 border-b border-gray-100">Quem Somos</a></li>
+                <li><a href="#gallery" class="block w-full text-center py-3 text-gray-700 hover:bg-background transition duration-200 border-b border-gray-100">Galeria</a></li>
+                <li><a href="#faq" class="block w-full text-center py-3 text-gray-700 hover:bg-background transition duration-200 border-b border-gray-100">FAQ</a></li>
+                <li><a href="#contactos" class="block w-full text-center py-3 bg-primary text-white hover:bg-opacity-90 transition duration-200">Contactos</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
         
-        <section id="home" class="hero-banner">
-            <div class="hero-content">
-                <h1>Seu Carro Merece o Melhor Brilho.</h1>
-                <p>Detalhes que transformam a aparência do seu veículo. Qualidade premium em lavagem e detailing.</p>
-                <div class="hero-actions">
-                    <a href="#services" class="btn-primary">Ver Nossos Serviços</a>
-                    <a href="#contactos" class="btn-secondary">Fale Conosco</a>
+        <!-- 1. SEÇÃO HERO/BANNER -->
+        <section id="home" class="hero-banner flex items-center text-left">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-white">
+                <div class="max-w-xl">
+                    <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight shadow-md">Seu Carro Merece o Melhor Brilho.</h1>
+                    <p class="text-xl md:text-2xl font-light mb-8">Detalhes que transformam a aparência do seu veículo. Qualidade premium em lavagem e detailing.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#services" class="bg-primary text-white px-8 py-3 rounded-full font-bold shadow-xl hover:bg-opacity-90 transform hover:scale-105 transition duration-300">
+                            Ver Nossos Serviços
+                        </a>
+                        <a href="#contactos" class="bg-white text-primary px-8 py-3 rounded-full font-bold shadow-xl hover:bg-gray-100 transform hover:scale-105 transition duration-300 border-2 border-primary">
+                            Agendar Agora
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="services" class="section-services">
-            <h2>Nossos Planos de Limpeza</h2>
-            <p class="section-subtitle">Escolha o serviço ideal para o nível de cuidado que seu carro precisa.</p>
-            <div class="service-cards-container">
+        <!-- 2. SEÇÃO SERVIÇOS -->
+        <section id="services" class="py-20 bg-background">
+            <h2 class="text-4xl font-extrabold text-dark-bg mb-2">Nossos Planos de Limpeza</h2>
+            <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">Escolha o serviço ideal para o nível de cuidado que seu carro precisa. Utilizamos as melhores técnicas e produtos.</p>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                 
-                <div class="service-card">
-                    <i class="fas fa-spray-can" aria-hidden="true"></i>
-                    <h3>Lavagem Express</h3>
-                    <p>Lavagem rápida e eficiente para o dia a dia. Inclui limpeza externa e aspiração básica.</p>
-                    <a href="#contactos" class="card-link" aria-label="Detalhes sobre a Lavagem Express">Detalhes <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                <!-- Card 1: Lavagem Express -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 border-t-4 border-primary">
+                    <i class="fas fa-spray-can text-5xl text-primary mb-5"></i>
+                    <h3 class="text-2xl font-bold mb-3 text-dark-bg">Lavagem Express</h3>
+                    <p class="text-gray-600 mb-4">Lavagem rápida e eficiente para o dia a dia. Inclui limpeza externa e aspiração básica.</p>
+                    <a href="#contactos" class="text-primary font-semibold hover:text-accent transition duration-300 flex items-center justify-center">
+                        Detalhes <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
                 </div>
                 
-                <div class="service-card featured">
-                    <i class="fas fa-spray-can" aria-hidden="true"></i>
-                    <h3>Detailing Interno Premium</h3>
-                    <p>Limpeza profunda de bancos, carpetes e teto, removendo manchas e odores. <strong>O mais popular!</strong></p>
-                    <a href="#contactos" class="card-link" aria-label="Detalhes sobre o Detailing Interno Premium">Detalhes <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                <!-- Card 2: Detailing Interno Premium (FEATURED) -->
+                <div class="bg-white p-8 rounded-xl shadow-2xl transition duration-500 transform hover:-translate-y-2 border-t-4 border-accent relative ring-4 ring-accent ring-opacity-50">
+                    <span class="absolute top-0 right-0 bg-accent text-dark-bg text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-xl">POPULAR</span>
+                    <i class="fas fa-car-side text-5xl text-accent mb-5"></i>
+                    <h3 class="text-2xl font-bold mb-3 text-dark-bg">Detailing Interno Premium</h3>
+                    <p class="text-gray-600 mb-4">Limpeza profunda de bancos, carpetes e teto, removendo manchas e odores. <strong>O mais procurado!</strong></p>
+                    <a href="#contactos" class="text-accent font-semibold hover:text-primary transition duration-300 flex items-center justify-center">
+                        Detalhes <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
                 </div>
                 
-                <div class="service-card">
-                    <i class="fas fa-magic" aria-hidden="true"></i>
-                    <h3>Polimento e Proteção</h3>
-                    <p>Restaura o brilho da pintura e aplica uma camada de cera protetora de longa duração.</p>
-                    <a href="#contactos" class="card-link" aria-label="Detalhes sobre Polimento e Proteção">Detalhes <i class="fas fa-chevron-right" aria-hidden="true"></i></a>
+                <!-- Card 3: Polimento e Proteção -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 border-t-4 border-primary">
+                    <i class="fas fa-magic text-5xl text-primary mb-5"></i>
+                    <h3 class="text-2xl font-bold mb-3 text-dark-bg">Polimento e Proteção</h3>
+                    <p class="text-gray-600 mb-4">Restaura o brilho da pintura e aplica uma camada de cera protetora de longa duração.</p>
+                    <a href="#contactos" class="text-primary font-semibold hover:text-accent transition duration-300 flex items-center justify-center">
+                        Detalhes <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
                 </div>
 
             </div>
         </section>
 
-        <section id="about" class="section-about">
-            <div class="about-content-grid">
-                <div class="about-image">
-                    <img src="home5.jpg" alt="Equipe de detailing automotivo de alta qualidade.">
+        <!-- 3. SEÇÃO QUEM SOMOS -->
+        <section id="about" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left">
+                
+                <!-- Imagem -->
+                <div class="lg:order-last">
+                    <!-- Placeholder de imagem representando a equipe ou o local -->
+                    <img src="home5.jpg" alt="Equipe de detailing automotivo de alta qualidade." class="w-full h-auto object-cover rounded-xl shadow-2xl">
                 </div>
-                <div class="about-text">
-                    <h2>Mais que Limpeza, É Paixão por Carros.</h2>
-                    <p>Aqui, não apenas lavamos carros; nós aplicamos uma filosofia de cuidado e restauração. Utilizando produtos de ponta e técnicas avançadas, garantimos um acabamento impecável em cada veículo.</p>
-                    <ul>
-                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Equipe Certificada e Experiente.</li>
-                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Produtos Biodegradáveis e Ecológicos.</li>
-                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Satisfação Garantida ou o seu dinheiro de volta.</li>
+                
+                <!-- Texto -->
+                <div>
+                    <h2 class="text-4xl font-extrabold text-dark-bg mb-4 text-left">Mais que Limpeza, É Paixão por Carros.</h2>
+                    <p class="text-gray-700 mb-6 text-lg">Aqui, não apenas lavamos carros; nós aplicamos uma filosofia de cuidado e restauração. Utilizando produtos de ponta e técnicas avançadas, garantimos um acabamento impecável em cada veículo.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start text-gray-700 text-lg"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i> Equipe Certificada e Experiente no detalhamento.</li>
+                        <li class="flex items-start text-gray-700 text-lg"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i> Produtos Biodegradáveis e Ecológicos (baixo impacto ambiental).</li>
+                        <li class="flex items-start text-gray-700 text-lg"><i class="fas fa-check-circle text-primary mt-1 mr-3"></i> Satisfação Garantida ou o seu dinheiro de volta.</li>
                     </ul>
-                    <a href="#contactos" class="btn-primary">Conheça Nossa História</a>
+                    <a href="#contactos" class="bg-accent text-dark-bg px-8 py-3 rounded-full font-bold shadow-xl hover:bg-yellow-400 transform hover:scale-105 transition duration-300 inline-block">
+                        Fale com um Especialista
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section id="gallery" class="section-gallery">
-            <h2>Galeria de Brilho</h2>
-            <p class="section-subtitle">Confira alguns dos veículos que já receberam o tratamento HydroClean.</p>
+        <!-- 4. SEÇÃO GALERIA -->
+        <section id="gallery" class="py-20 bg-background text-center">
+            <h2 class="text-4xl font-extrabold text-dark-bg mb-2">Galeria de Brilho</h2>
+            <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">Confira alguns dos veículos que já receberam o tratamento TOPUITO e o brilho que podemos entregar.</p>
             
-            <div class="gallery-grid">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                 
-                <div class="gallery-item before">
-                    <img src="home6.JPG" alt="Vista do carro sujo antes da lavagem premium.">
-                    <div class="caption">Ver Mais</div>
+                <!-- Item 1 -->
+                <div class="group relative overflow-hidden rounded-lg shadow-xl cursor-pointer col-span-2 row-span-1 h-64 md:h-96">
+                    <img src="home6.JPG" alt="Carro sujo antes da lavagem premium." class="w-full h-full object-cover transition duration-500 transform group-hover:scale-105 group-hover:brightness-75">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+                        <span class="text-white text-xl font-bold border-2 border-white p-2 rounded-lg">ANTES: Limpeza Profunda</span>
+                    </div>
                 </div>
                 
-                <div class="gallery-item after">
-                    <img src="home7.JPG" alt="Carro limpo com brilho espelhado após o detalhamento.">
-                    <div class="caption">Ver Mais</div>                                                 
+                <!-- Item 2 -->
+                <div class="group relative overflow-hidden rounded-lg shadow-xl cursor-pointer col-span-2 row-span-1 h-64 md:h-96">
+                    <img src="home7.JPG" alt="Carro limpo com brilho espelhado após o detalhamento." class="w-full h-full object-cover transition duration-500 transform group-hover:scale-105 group-hover:brightness-75">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+                        <span class="text-white text-xl font-bold border-2 border-white p-2 rounded-lg">DEPOIS: Acabamento Espelhado</span>
+                    </div>
                 </div>
                 
-                <div class="gallery-item detail">
-                    <img src="home8.JPG" alt="Close-up do interior do carro, bancos e painel limpos.">
-                    <div class="caption">Ver Mais</div>
+                <!-- Item 3 -->
+                <div class="group relative overflow-hidden rounded-lg shadow-xl cursor-pointer col-span-2 h-64">
+                    <img src="home8.JPG" alt="Close-up do interior do carro, bancos e painel limpos." class="w-full h-full object-cover transition duration-500 transform group-hover:scale-105 group-hover:brightness-75">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+                        <span class="text-white text-lg font-bold">Detalhe Interno</span>
+                    </div>
                 </div>
 
-                <div class="gallery-item wheel">
-                    <img src="home9.JPG" alt="Detalhe do pneu e roda limpos e brilhantes.">
-                    <div class="caption">Ver Mais</div>
+                <!-- Item 4 -->
+                <div class="group relative overflow-hidden rounded-lg shadow-xl cursor-pointer col-span-2 h-64">
+                    <img src="home9.JPG" alt="Detalhe do pneu e roda limpos e brilhantes." class="w-full h-full object-cover transition duration-500 transform group-hover:scale-105 group-hover:brightness-75">
+                    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+                        <span class="text-white text-lg font-bold">Rodas Impecáveis</span>
+                    </div>
                 </div>
                 
             </div>
-            <a href="#contactos" class="btn-primary" style="margin-top: 40px;">Solicite um Orçamento</a>
+            <a href="#contactos" class="mt-12 bg-primary text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-opacity-90 transform hover:scale-105 transition duration-300 inline-block">
+                Solicite um Orçamento
+            </a>
         </section>
 
-        <section id="faq" class="faq-section">
-            <div class="faq-container">
-                <h2>Perguntas Frequentes</h2>
-                <p class="section-subtitle">Respostas rápidas para as suas dúvidas mais comuns.</p>
+        <!-- 5. SEÇÃO FAQ -->
+        <section id="faq" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl font-extrabold text-dark-bg mb-2">Perguntas Frequentes</h2>
+                <p class="text-xl text-gray-600 mb-12">Respostas rápidas para as suas dúvidas mais comuns sobre nossos serviços.</p>
 
-                <div class="faq-item">
-                    <div class="faq-question" id="faq-q1" role="button" aria-expanded="false" aria-controls="faq-a1" tabindex="0">Quais são os horários de funcionamento?</div>
-                    <div class="faq-answer" id="faq-a1" aria-labelledby="faq-q1" role="region">
-                        Estamos abertos de Segunda a Sábado, das 8h00 às 18h00. Sugerimos agendar para garantir o melhor atendimento e evitar filas.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" id="faq-q2" role="button" aria-expanded="false" aria-controls="faq-a2" tabindex="0">Quanto tempo dura uma lavagem completa?</div>
-                    <div class="faq-answer" id="faq-a2" aria-labelledby="faq-q2" role="region">
-                        Uma Lavagem Express leva cerca de 40 minutos. Nossos serviços de Detailing Premium podem levar de 3 a 5 horas, dependendo do pacote escolhido e do estado do veículo.
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" id="faq-q3" role="button" aria-expanded="false" aria-controls="faq-a3" tabindex="0">Vocês utilizam produtos ecológicos?</div>
-                    <div class="faq-answer" id="faq-a3" aria-labelledby="faq-q3" role="region">
-                        Sim! Nosso compromisso é com o planeta e com a saúde do seu carro. Utilizamos uma linha completa de produtos biodegradáveis e com baixo consumo de água.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question" id="faq-q4" role="button" aria-expanded="false" aria-controls="faq-a4" tabindex="0">É preciso agendar ou posso ir diretamente?</div>
-                    <div class="faq-answer" id="faq-a4" aria-labelledby="faq-q4" role="region">
-                        Aceitamos clientes sem agendamento (por ordem de chegada), mas para serviços de Detailing ou nos horários de pico, o agendamento é **altamente recomendado** para garantir sua vaga.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contactos" class="section-contactos">
-            <h2>Fale Conosco</h2>
-            <p class="section-subtitle">Estamos prontos para atender você. Use o formulário ou as informações abaixo.</p>
-            
-            <div class="contact-grid">
-                
-                <div class="contact-form-side">
-                    <h3>Agendamento Rápido</h3>
-                    <form action="#" method="POST" class="contact-form">
-                        <input type="text" placeholder="Seu Nome Completo" required aria-label="Nome Completo">
-                        <input type="email" placeholder="Seu E-mail" required aria-label="E-mail">
-                        <input type="tel" placeholder="Seu Telefone (Ex: 84 123 4567)" required aria-label="Telefone">
-                        <select required aria-label="Escolha um Serviço">
-                            <option value="" disabled selected>Escolha um Serviço</option>
-                            <option value="express">Lavagem Completa</option>
-                            <option value="premium">Lavagem exterior / interior</option>
-                            <option value="polimento">Lavagem do Chassis</option>
-                            <option value="polimento">Lavagem de Viaturas</option>
-                            <option value="polimento">Lavagem de Oleo e Filtros</option>
-                            <option value="polimento">Lubrificacao</option>
-                            <option value="polimento">Aspiracao</option>
-                        </select>
-                        <textarea placeholder="Mensagem / Detalhes do Carro" aria-label="Mensagem e Detalhes do Carro"></textarea>
-                        <button type="submit" class="btn-primary btn-cta">Enviar Pedido de Agendamento</button>
-                    </form>
-                </div>
-
-                <div class="contact-info-side">
-                    <h3>Nossa Localização</h3>
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                        <p>Topuito, Larde, Nampula, Moçambique</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-phone" aria-hidden="true"></i>
-                        <p>+258 84 265 7068</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-envelope" aria-hidden="true"></i>
-                        <p>carwashtopuito@gmail.com</p>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-clock" aria-hidden="true"></i>
-                        <p>Segunda a Sábado: 8h00 - 18h00</p>
-                    </div>
+                <div class="text-left space-y-4">
                     
-                    <div class="map-placeholder">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15767.12345!2d32.5700!3d-25.9600!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDU3JzI5LjkiUyAzMsKwNTcnMjkuOSJF!5e0!3m2!1spt-BR!2smz!4v1667744444!5m2!1spt-BR!2smz" title="Localização da HydroClean no Mapa" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-item bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden">
+                        <div id="faq-q1" role="button" aria-expanded="false" aria-controls="faq-a1" tabindex="0" class="faq-question p-5 text-lg font-semibold cursor-pointer flex justify-between items-center text-dark-bg hover:bg-gray-100">
+                            Quais são os horários de funcionamento?
+                        </div>
+                        <div id="faq-a1" aria-labelledby="faq-q1" role="region" class="faq-answer px-5 text-gray-600 bg-white">
+                            Estamos abertos de **Segunda a Sábado, das 8h00 às 18h00**. Sugerimos agendar para garantir o melhor atendimento e evitar filas, especialmente nos finais de semana.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="faq-item bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden">
+                        <div id="faq-q2" role="button" aria-expanded="false" aria-controls="faq-a2" tabindex="0" class="faq-question p-5 text-lg font-semibold cursor-pointer flex justify-between items-center text-dark-bg hover:bg-gray-100">
+                            Quanto tempo dura uma lavagem completa?
+                        </div>
+                        <div id="faq-a2" aria-labelledby="faq-q2" role="region" class="faq-answer px-5 text-gray-600 bg-white">
+                            Uma Lavagem Express leva cerca de **40 minutos**. Nossos serviços de Detailing Premium podem levar de **3 a 5 horas**, dependendo do pacote escolhido e do estado do veículo. Priorizamos a qualidade sobre a velocidade.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="faq-item bg-gray-50 border border-gray-200 rounded-xl shadow-md overflow-hidden">
+                        <div id="faq-q3" role="button" aria-expanded="false" aria-controls="faq-a3" tabindex="0" class="faq-question p-5 text-lg font-semibold cursor-pointer flex justify-between items-center text-dark-bg hover:bg-gray-100">
+                            Vocês utilizam produtos ecológicos?
+                        </div>
+                        <div id="faq-a3" aria-labelledby="faq-q3" role="region" class="faq-answer px-5 text-gray-600 bg-white">
+                            Sim! Nosso compromisso é com o planeta e com a saúde do seu carro. Utilizamos uma linha completa de produtos **biodegradáveis** e com baixo consumo de água em todos os nossos processos.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SEÇÃO CONTACTOS -->
+        <section id="contactos" class="py-20 bg-background">
+            <h2 class="text-4xl font-extrabold text-dark-bg mb-2 text-center">Fale Conosco</h2>
+            <p class="text-xl text-gray-600 mb-12 max-w-3xl mx-auto text-center">Estamos prontos para atender você. Agende seu serviço hoje mesmo.</p>
+            
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 bg-white p-8 md:p-12 rounded-xl shadow-2xl border-t-8 border-primary">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 text-left">
+                    
+                    <!-- Formulário de Agendamento -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-primary mb-6">Agendamento Rápido</h3>
+                        <form action="#" method="POST" class="space-y-4">
+                            <input type="text" placeholder="Seu Nome Completo" required aria-label="Nome Completo"
+                                class="w-full p-4 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200">
+                            <input type="email" placeholder="Seu E-mail" required aria-label="E-mail"
+                                class="w-full p-4 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200">
+                            <input type="tel" placeholder="Seu Telefone (Ex: 84 123 4567)" required aria-label="Telefone"
+                                class="w-full p-4 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200">
+                            <select required aria-label="Escolha um Serviço"
+                                class="w-full p-4 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 bg-white">
+                                <option value="" disabled selected>Escolha um Serviço</option>
+                                <option value="completa">Lavagem Completa</option>
+                                <option value="exterior">Lavagem Exterior / Interior</option>
+                                <option value="chassis">Lavagem do Chassis</option>
+                                <option value="viaturas">Lavagem de Viaturas</option>
+                                <option value="oleo">Lavagem de Óleo e Filtros</option>
+                                <option value="lubrificacao">Lubrificação</option>
+                                <option value="aspiracao">Aspiração Completa</option>
+                            </select>
+                            <textarea placeholder="Mensagem / Detalhes do Carro" aria-label="Mensagem e Detalhes do Carro"
+                                class="w-full p-4 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-200 min-h-[100px]"></textarea>
+                            <button type="submit" class="w-full bg-accent text-dark-bg px-8 py-3 rounded-full font-bold shadow-xl hover:bg-yellow-400 transform hover:scale-[1.01] transition duration-300 mt-4">
+                                Enviar Pedido de Agendamento
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Informações de Contato e Mapa -->
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-primary mb-6">Nossa Localização</h3>
+                        
+                        <!-- Localização -->
+                        <div class="flex items-start text-gray-700">
+                            <i class="fas fa-map-marker-alt text-2xl text-primary mr-4 mt-1 w-6 flex-shrink-0"></i>
+                            <p class="font-medium">Topuito, Larde, Nampula, Moçambique</p>
+                        </div>
+                        
+                        <!-- Telefone -->
+                        <div class="flex items-start text-gray-700">
+                            <i class="fas fa-phone text-2xl text-primary mr-4 mt-1 w-6 flex-shrink-0"></i>
+                            <p class="font-medium">+258 84 265 7068</p>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="flex items-start text-gray-700">
+                            <i class="fas fa-envelope text-2xl text-primary mr-4 mt-1 w-6 flex-shrink-0"></i>
+                            <p class="font-medium">carwashtopuito@gmail.com</p>
+                        </div>
+                        
+                        <!-- Horário -->
+                        <div class="flex items-start text-gray-700">
+                            <i class="fas fa-clock text-2xl text-primary mr-4 mt-1 w-6 flex-shrink-0"></i>
+                            <p class="font-medium">Segunda a Sábado: 8h00 - 18h00</p>
+                        </div>
+                        
+                        <!-- Mapa -->
+                        <div class="map-placeholder mt-8 rounded-lg overflow-hidden shadow-xl">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15767.12345!2d39.2618!3d-14.8967!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjVCsDU3JzI5LjkiUyAzMsKwNTcnMjkuOSJF!5e0!3m2!1spt-BR!2smz!4v1667744444!5m2!1spt-BR!2smz" title="Localização da TOPUITO CAR WASH no Mapa" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -212,33 +378,98 @@
 
     </main>
 
-    <footer class="main-footer">
-        <div class="footer-container">
-            <div class="footer-info">
-                <h3>TOPUITO CAR WASH</h3>
-                <p>Cuidando do seu veículo com paixão e precisão.</p>
+    <!-- RODAPÉ -->
+    <footer class="bg-dark-bg text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700 pb-8 mb-8">
+                
+                <!-- Info -->
+                <div class="text-center md:text-left">
+                    <h3 class="text-xl font-extrabold text-primary mb-3">TOPUITO CAR WASH</h3>
+                    <p class="text-gray-400">Cuidando do seu veículo com paixão e precisão em Nampula.</p>
+                </div>
+                
+                <!-- Links -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-lg font-bold text-white mb-4">Links Úteis</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="hover:text-primary transition duration-300">Nossos Serviços</a></li>
+                        <li><a href="#about" class="hover:text-primary transition duration-300">Sobre a Empresa</a></li>
+                        <li><a href="#" class="hover:text-primary transition duration-300">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Social -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-lg font-bold text-white mb-4">Siga-nos</h4>
+                    <div class="flex justify-center md:justify-start space-x-6">
+                        <a href="#" aria-label="Instagram" class="text-2xl hover:text-primary transition duration-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook" class="text-2xl hover:text-primary transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Whatsapp" class="text-2xl hover:text-primary transition duration-300"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="footer-links">
-                <h4>Links Úteis</h4>
-                <ul>
-                    <li><a href="#services">Nossos Serviços</a></li>
-                    <li><a href="#about">Sobre a Empresa</a></li>
-                    <li><a href="#">Política de Privacidade</a></li>
-                </ul>
+            
+            <!-- Bottom -->
+            <div class="text-center text-gray-500 text-sm">
+                <p>© 2025 TOPUITO CAR WASH. Todos os direitos reservados. | Desenvolvido com <i class="fas fa-heart text-red-500"></i></p>
             </div>
-            <div class="footer-social">
-                <h4>Siga-nos</h4>
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                <a href="#" aria-label="Whatsapp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 TOPUITO CAR WASH. Todos os direitos reservados. | Desenvolvido com <i  aria-hidden="true">3C TECHNOLOGY</i></p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- SCRIPT JS PARA INTERAÇÕES (Menu Mobile e FAQ) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // 1. Mobile Menu Toggle
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+            });
+
+            // Fechar o menu ao clicar em um link (apenas no mobile)
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                    }
+                });
+            });
+
+            // 2. FAQ Acordeão
+            const faqQuestions = document.querySelectorAll('.faq-question');
+
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answerId = question.getAttribute('aria-controls');
+                    const answer = document.getElementById(answerId);
+                    const isExpanded = question.getAttribute('aria-expanded') === 'true';
+
+                    // Fecha todos os outros
+                    document.querySelectorAll('.faq-question').forEach(q => {
+                        if (q !== question) {
+                            q.classList.remove('active');
+                            q.setAttribute('aria-expanded', 'false');
+                            document.getElementById(q.getAttribute('aria-controls')).classList.remove('active');
+                        }
+                    });
+
+                    // Abre ou fecha o item clicado
+                    if (isExpanded) {
+                        question.classList.remove('active');
+                        answer.classList.remove('active');
+                        question.setAttribute('aria-expanded', 'false');
+                    } else {
+                        question.classList.add('active');
+                        answer.classList.add('active');
+                        question.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
